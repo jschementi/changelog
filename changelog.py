@@ -251,8 +251,11 @@ def notify_build(job_name, build_number, sender, email_addresses):
     build = get_changes_from_build(job_name, build_number)
     text = render_build_changes_as_markdown(build)
     html = markdown(text)
-    send_email(build['job_name'], html, text, sender, email_addresses)
-    print "Email sent from %s to %s" % (sender, ', '.join(email_addresses))
+    if len(html) == 0:
+        print "No HTML content, not sending email"
+    else:
+        send_email(build['job_name'], html, text, sender, email_addresses)
+        print "Email sent from %s to %s" % (sender, ', '.join(email_addresses))
 
 if __name__ == '__main__':
 
